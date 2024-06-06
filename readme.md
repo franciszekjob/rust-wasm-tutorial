@@ -43,3 +43,36 @@ Załadowanie pliku .wasm na stronie internetowej: Plik jest ładowany do przegl�
 
 
 W ten sposób WebAssembly pozwala na wykorzystanie kodu z różnych języków programowania na stronach internetowych i zapewnia dużą wydajność w porównaniu z tradycyjnym JavaScriptem.
+
+## 5. Setup projektu
+
+### 5.1 Potrzebne narzędzia
+
+Przed rozpoczęciem tworzenia projektu WebAssembly w Rust-cie, musimy pobrać odpowiednie narzędzia.
+
+#### `Rust`
+Z oczywistych względów.
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+#### `wasm-pack`
+`wasm-pack` to narzędzie służące m.in. do kompilowania kodu Rust-a do WebAssembly.
+
+```
+cargo install wasm-pack
+```
+
+### 5.2 Tworzenie projektu
+Na początku stwórzmy nową bibliotekę Rust-a o nazwia tutorial.
+```
+cargo new --lib tutorial
+```
+W katologu, którym wywołaliśmy te komendę stworzy się taka struktura
+```
+|--tutorial
+   |--Cargo.toml
+   |--src
+      |--lib.rs
+```
+W pliku `lib.rs` będziemy pisać kod Rust-a, który będzie kompilowany do **WASM**.
