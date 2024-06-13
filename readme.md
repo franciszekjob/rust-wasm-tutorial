@@ -39,7 +39,19 @@ Kompilacja do WASM: Kod źródłowy jest kompilowany do formatu WebAssembly prze
 
 Generowanie pliku `.wasm`: Kompilator generuje plik `.wasm`, który jest binarny i gotowy do użycia na stronach internetowych.
 
-Załadowanie pliku .wasm na stronie internetowej: Plik jest ładowany do przeglądarki za pomocą JavaScriptu, który następnie może wywoływać z niego funkcje.
+Załadowanie pliku `.wasm` na stronie internetowej: Plik jest ładowany do przeglądarki za pomocą JavaScriptu, który następnie może wywoływać z niego funkcje.
+
+Przykład ładowania pliku `.wasm` w Javascripcie:
+```js
+(async () => {
+  const response = await fetch('fibonacci.wasm');
+  const buffer = await response.arrayBuffer();
+  const module = new WebAssembly.Module(buffer);
+  const instance = new WebAssembly.Instance(module);
+  const result = instance.exports.fibonacci(42);
+  console.log(result);
+})();
+```
 
 
-W ten sposób WebAssembly pozwala na wykorzystanie kodu z różnych języków programowania na stronach internetowych i zapewnia dużą wydajność w porównaniu z tradycyjnym JavaScriptem.
+W ten sposób WASM pozwala na wykorzystanie kodu z różnych języków programowania na stronach internetowych i zapewnia dużą wydajność w porównaniu z tradycyjnym JavaScriptem.
