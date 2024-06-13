@@ -6,6 +6,8 @@
 - [Spis treści](#spis-treści)
   - [1. Czym jest WebAssembly?](#1-czym-jest-webassembly)
   - [2. Jak działa WebAssembly?](#2-jak-działa-webassembly)
+  - [3. Gdzie jest używane WASM?](#3-gdzie-jest-uzywane-wasm)
+  - [4. Zalety i wady WASM?](#4-zalety-i-wady-wasm)
   - [5. Setup projektu](#5-setup-projektu)
     - [5.1 Potrzebne narzędzia](#51-potrzebne-narzędzia)
     - [5.2 Tworzenie biblioteki](#52-tworzenie-biblioteki)
@@ -18,7 +20,7 @@
 
 ## 1. Czym jest WebAssembly?
 <img src="./img/wasm.png" width="100px"/><br/>
-WASM to nowoczesny format binarny zaprojektowany do wykonywania w przeglądarkach internetowych o wysokiej wydajności. Umożliwia uruchamianie kodu napisane w różnych językach programowania na stronach internetowych, zapewniając prędkość porównywalną z natywnymi aplikacjami.
+WASM to nowoczesny format binarny o wysokiej wydajności, zaprojektowany do wykonywania w przeglądarkach internetowych. Umożliwia uruchamianie kodu napisane w różnych językach programowania na stronach internetowych, zapewniając prędkość porównywalną z natywnymi aplikacjami.
 
 Garść informacji:
 - pracę nad WASM rozpoczęto w 2015 roku
@@ -58,6 +60,28 @@ Przykład ładowania pliku `.wasm` w Javascripcie:
 
 
 W ten sposób WebAssembly pozwala na wykorzystanie kodu z różnych języków programowania na stronach internetowych i zapewnia dużą wydajność w porównaniu z tradycyjnym JavaScriptem.
+
+## 3. Gdzie jest używane WASM?
+
+### Figma
+<img src="./img/figma.png" width="200px"/>
+<br/>
+<img src="./img/figma_stats.png" />
+
+### AutoCad
+<img src="./img/auto_cad.png" width="300px"/>
+
+## 4. Zalety i wady WASM
+
+### Zalety
+- Wydajność - oferuje wydajność zbliżoną do kodu natywnego, co jest znaczną poprawą w porównaniu do tradycyjnego JavaScriptu. Dzięki temu aplikacje webowe mogą działać szybciej i bardziej płynnie
+- Przenośność - Kod WebAssembly jest binarny i przenośny, co oznacza, że może być łatwo przenoszony i uruchamiany na różnych platformach i urządzeniach bez konieczności modyfikacji.
+- Językowo niezależny - WebAssembly można tworzyć przy użyciu różnych języków programowania, takich jak C, C++, Rust
+- mniejsze rozmiary plików w stosunku do JS
+
+### Wady
+- brak garbage collector
+- komunikuje się z DOM'em przez Javascript, a nie bezpośrednio
 
 ## 5. Setup projektu
 
