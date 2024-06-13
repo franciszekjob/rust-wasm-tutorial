@@ -6,7 +6,6 @@ const board = Board.new();
 const cells = document.querySelectorAll(".cell");
 
 const click = (row, col) => {
-  console.log(row, col);
   board.check_box(row, col);
   checkWin(board.game_state());
   drawCells();
