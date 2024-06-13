@@ -15,6 +15,8 @@
     - [Dyrektywa `wasm-bindgen`](#dyrektywa-wasm-bindgen)
     - [Komunikacja Rust \<-\> JS](#komunikacja-rust---js)
     - [Rezultat końcowy](#rezultat-końcowy)
+  - [7. Podsumowanie](#7-podsumowanie)
+    - [Porównanie kodu Yew i React](#porównanie-kodu-yew-i-react)
 
 ## 1. Czym jest WebAssembly?
 <img src="./img/wasm.png" width="100px"/><br/>
@@ -429,6 +431,7 @@ const drawCells = () => {
     cell.innerText = symbol;
   });
 };
+
 cells.forEach((cell) => {
   cell.onclick = () => click(parseInt(cell.id[0]), parseInt(cell.id[2]));
 });
@@ -436,3 +439,46 @@ cells.forEach((cell) => {
 ```
 ### Rezultat końcowy
 <img src="img/gameplay.gif">
+
+## 7. Podsumowanie
+`wasm_bindgen` umożliwia proste tworzenie interfejsów między Rust-em i JS-em. Dzięki temu możemy wykorzystać szybkość Rust-a podczas tworzenia aplikacji webowych. Istnieją również biblioteki UI stworzone w Rust-cie do WebAssembly, które znacznie ułatwiają tworzenie front-endu. Jedną z popularniejszych bibliotek jest [Yew](https://yew.rs/).
+### Porównanie kodu Yew i React
+```rust
+use yew::prelude::*;
+
+#[function_component]
+fn App() -> Html {
+    let counter = use_state(|| 0);
+    let onclick = {
+        let counter = counter.clone();
+        move |_| {
+            let value = *counter + 1;
+            counter.set(value);
+        }
+    };
+
+    html! {
+        <div>
+            <button {onclick}>{ "+1" }</button>
+            <p>{ *counter }</p>
+        </div>
+    }
+}
+```
+```tsx
+import { useState } from "react"
+
+const App = () => {
+  const [counter, setCounter] = useState<number>(0);
+  const onClick = () => {
+    setCounter((counter) => counter+1);
+  }
+
+  return(
+    <div>
+      <button onClick={onClick}>"+1" </button>
+      <p>{ counter }</p>
+    </div>
+  )
+}
+```
