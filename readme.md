@@ -6,7 +6,6 @@
 2. [Jak działa WebAssembly?](#jak-działa-webassembly)
 3. [Gdzie jest używane WebAssembly?](#gdzie-jest-używane-webassembly)
 4. [Zalety i wady WebAssembly](#zalety-i-wady-webassembly)
-
 5. [Jak użyć Rusta z WASM'em - setup projektu](#jak-użyć-rusta-z-wasmem---setup-projektu)
 6. [Napisanie prostego przykładu](#napisanie-prostego-przykładu)
 7. [Komunikacja Rust <-> JavaScript](#komunikacja-rust--javascript)
@@ -63,8 +62,8 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 cargo install wasm-pack
 ```
 
-### 5.2 Tworzenie projektu
-Na początku stwórzmy nową bibliotekę Rust-a o nazwia tutorial.
+### 5.2 Tworzenie biblioteki
+Na początku stwórzmy nową bibliotekę Rust-a o nazwie tutorial.
 ```
 cargo new --lib tutorial
 ```
@@ -76,3 +75,114 @@ W katologu, którym wywołaliśmy te komendę stworzy się taka struktura
       |--lib.rs
 ```
 W pliku `lib.rs` będziemy pisać kod Rust-a, który będzie kompilowany do **WASM**.
+Dla przykładu napiszmy coś takiego (później wyjaśnimy).
+```rust
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+extern {
+    pub fn alert(s: &str);
+}
+
+#[wasm_bindgen]
+pub fn greet(name: &str) {
+    alert(&format!("Hello, {}!", name));
+}
+``` 
+### 5.3 Buildowanie
+Zbuildujmy teraz nasz prosty kod. W pliku `Cargo.toml` dodajmy dwie rzeczy:
+```toml
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+```
+ W konsoli wpisujemy:
+```
+wasm-pack build --target web
+```
+To polecenie skompiluje nasz kod Rust-a do WebAssembly oraz stworzy plik JS, który zamieni plik WASM w moduł zrozumiały dla przeglądarki.
+Następnie stworzy folder `pkg`, w którym zamieści powstałe pliki oraz na podstawie `Cargo.toml` stworzy `package.json`.
+
+*Dodanie flagi --target web umożliwia importowanie stworzonych plików JS jako natywne moduły ES. Domyślnie `wasm-pack` builduje kod z flagą **bundler**, przez co tworzy kod przeznaczony do pracy z bundlerami, np. Webpackiem.*
+
+Teraz nasza struktura plików powinna wyglądać tak:
+```
+├── Cargo.lock
+├── Cargo.toml
+├── pkg
+│   ├── tutorial.d.ts
+│   ├── tutorial.js
+│   ├── tutorial_bg.wasm
+│   ├── tutorial_bg.wasm.d.ts
+│   └── package.json
+├── src
+│   └── lib.rs
+└── target
+    ├── CACHEDIR.TAG
+    ├── release
+    └── wasm32-unknown-unknown
+```
+
+**`tutorial_bg.wasm`**
+
+Plik binarny WebAssembly generowany przez kompilator Rust-a. Zawiera wszystkie funkcje i dane stworzone przez nas w Rust-cie. 
+
+**`tutorial.js`**
+
+Plik *.js* generowany przez `wasm-pack`. Zawiera w sobie mechanizmy dzięki, którym możemy importować **DOM** i funkcje JavaScriptu do Rust-a oraz API do WebAssembly. Zawiera również funkcje napisane przez nas w Rust-cie.
+
+**`tutorial.d.ts`**
+
+Plik *.d.ts* zawierający deklarację typów w TypeScript. Przydatny gdy używamy TypeScriptu przy pracy z WebAssembly, ponieważ umożliwia np. podpowiedzi ze strony IDE.
+
+**`tutorial_bg.d.ts`**
+
+Podobnie jak powyższy plik zawiera deklaracje typów dla funkcji wykorzystywanych w API do WebAssembly.
+
+
+### 5.4 Zastosowanie
+
+Dodajmy plik `index.html`, w którym użyjemy funkcji `greet` napisanej przez nas w Rust-cie.
+```
+├── Cargo.lock
+├── Cargo.toml
+├── index.html  <-- plik .html
+├── pkg
+│   ├── tutorial.d.ts
+│   ├── tutorial.js
+│   ├── tutorial_bg.wasm
+│   ├── tutorial_bg.wasm.d.ts
+│   └── package.json
+├── src
+│   └── lib.rs
+└── target
+    ├── CACHEDIR.TAG
+    ├── release
+    └── wasm32-unknown-unknown
+```
+
+W pliku `index.html` wpisujemy:
+```html
+<!doctype html>
+<html lang="pl-PL">
+  <head>
+    <meta charset="utf-8" />
+    <title>wasm tutorial</title>
+  </head>
+  <body>
+    <script type="module">
+      import init, { greet } from "./pkg/tutorial.js";
+      init().then(() => {
+        greet("world!");
+      });
+    </script>
+  </body>
+</html>
+```
+
+Żeby zobaczyć efekt naszej pracy musimy użyć prostego lokalnego serwera http (np. rozszerzenia **LiveServer** w Visual Studio Code lub komendy `python3 -m http-server`).
+
+Po włączeniu serwera zobaczymy:
+<img src="img/ss_hello_world.png"/>
