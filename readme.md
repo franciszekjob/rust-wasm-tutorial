@@ -90,7 +90,15 @@ pub fn greet(name: &str) {
 }
 ``` 
 ### 5.3 Buildowanie
-Zbuildujmy teraz nasz prosty kod. W konsoli wpisujemy:
+Zbuildujmy teraz nasz prosty kod. W pliku `Cargo.toml` dodajmy dwie rzeczy:
+```toml
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+```
+ W konsoli wpisujemy:
 ```
 wasm-pack build --target web
 ```
@@ -116,3 +124,65 @@ Teraz nasza struktura plików powinna wyglądać tak:
     ├── release
     └── wasm32-unknown-unknown
 ```
+
+**`tutorial_bg.wasm`**
+
+Plik binarny WebAssembly generowany przez kompilator Rust-a. Zawiera wszystkie funkcje i dane stworzone przez nas w Rust-cie. 
+
+**`tutorial.js`**
+
+Plik *.js* generowany przez `wasm-pack`. Zawiera w sobie mechanizmy dzięki, którym możemy importować **DOM** i funkcje JavaScriptu do Rust-a oraz API do WebAssembly. Zawiera również funkcje napisane przez nas w Rust-cie.
+
+**`tutorial.d.ts`**
+
+Plik *.d.ts* zawierający deklarację typów w TypeScript. Przydatny gdy używamy TypeScriptu przy pracy z WebAssembly, ponieważ umożliwia np. podpowiedzi ze strony IDE.
+
+**`tutorial_bg.d.ts`**
+
+Podobnie jak powyższy plik zawiera deklaracje typów dla funkcji wykorzystywanych w API do WebAssembly.
+
+
+### 5.4 Zastosowanie
+
+Dodajmy plik `index.html`, w którym użyjemy funkcji `greet` napisanej przez nas w Rust-cie.
+```
+├── Cargo.lock
+├── Cargo.toml
+├── index.html  <-- plik .html
+├── pkg
+│   ├── tutorial.d.ts
+│   ├── tutorial.js
+│   ├── tutorial_bg.wasm
+│   ├── tutorial_bg.wasm.d.ts
+│   └── package.json
+├── src
+│   └── lib.rs
+└── target
+    ├── CACHEDIR.TAG
+    ├── release
+    └── wasm32-unknown-unknown
+```
+
+W pliku `index.html` wpisujemy:
+```html
+<!doctype html>
+<html lang="pl-PL">
+  <head>
+    <meta charset="utf-8" />
+    <title>wasm tutorial</title>
+  </head>
+  <body>
+    <script type="module">
+      import init, { greet } from "./pkg/tutorial.js";
+      init().then(() => {
+        greet("world!");
+      });
+    </script>
+  </body>
+</html>
+```
+
+Żeby zobaczyć efekt naszej pracy musimy użyć prostego lokalnego serwera http (np. rozszerzenia **LiveServer** w Visual Studio Code lub komendy `python3 -m http-server`).
+
+Po włączeniu serwera zobaczymy:
+<img src="img/ss_hello_world.png"/>
