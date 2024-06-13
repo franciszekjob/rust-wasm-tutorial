@@ -435,8 +435,4 @@ cells.forEach((cell) => {
 
 ```
 ### Rezultat końcowy
-<div style="display: grid; place-items: center;">
-<video width="640" height="480" controls>
-  <source src="img/gameplay.mp4" type="video/mp4">
-</video>
-</div>
+<img src="img/gameplay.gif">
