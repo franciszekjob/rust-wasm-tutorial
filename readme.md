@@ -4,8 +4,8 @@
 
 - [WASM + Rust tutorial](#wasm--rust-tutorial)
 - [Spis treści](#spis-treści)
-  - [1. Czym jest WebAssembly?](#1-czym-jest-webassembly)
-  - [2. Jak działa WebAssembly?](#2-jak-działa-webassembly)
+  - [1. Czym jest Web Assembly?](#1-czym-jest-Web Assembly)
+  - [2. Jak działa Web Assembly?](#2-jak-działa-Web Assembly)
   - [3. Gdzie jest używane WASM?](#3-gdzie-jest-uzywane-wasm)
   - [4. Zalety i wady WASM?](#4-zalety-i-wady-wasm)
   - [5. Setup projektu](#5-setup-projektu)
@@ -20,7 +20,7 @@
   - [7. Podsumowanie](#7-podsumowanie)
     - [Porównanie kodu Yew i React](#porównanie-kodu-yew-i-react)
 
-## 1. Czym jest WebAssembly?
+## 1. Czym jest Web Assembly?
 <img src="./img/wasm.png" width="100px"/><br/>
 WASM to nowoczesny format binarny o wysokiej wydajności, zaprojektowany do wykonywania w przeglądarkach internetowych. Umożliwia uruchamianie kodu napisane w różnych językach programowania na stronach internetowych, zapewniając prędkość porównywalną z natywnymi aplikacjami.
 
@@ -30,14 +30,14 @@ Garść informacji:
 - nazwa nawiązuje do Assemblera, z racji niskopoziomowego kodu
 -  został czwartym językiem natywnie obsługiwanym w przeglądarkach internetowych, dołączając do HTML, JavaScript, oraz CSS
 
-## 2. Jak działa WebAssembly?
+## 2. Jak działa Web Assembly?
 <img src="./img/wasm_scheme.png"/>
 <br/>
 <br/>
 
 Proces kompilacji WASM zaczyna się od języka źródłowego, takiego jak C++, Rust lub innego, który jest kompatybilny z WASM.
 
-Kompilacja do WASM: Kod źródłowy jest kompilowany do formatu WebAssembly przez dedykowany kompilator. Na przykład dla C++ używany jest `Emscripten`, a dla Rust - `wasm-pack`.
+Kompilacja do WASM: Kod źródłowy jest kompilowany do formatu Web Assembly przez dedykowany kompilator. Na przykład dla C++ używany jest `Emscripten`, a dla Rust - `wasm-pack`.
 <br/>
 
 <img src="./img/wasm-pack.png" width="100px"/>
@@ -53,16 +53,20 @@ Przykład ładowania pliku `.wasm` w Javascripcie:
 (async () => {
   const response = await fetch('fibonacci.wasm');
   const buffer = await response.arrayBuffer();
-  const module = new WebAssembly.Module(buffer);
-  const instance = new WebAssembly.Instance(module);
+  const module = new Web Assembly.Module(buffer);
+  const instance = new Web Assembly.Instance(module);
   const result = instance.exports.fibonacci(42);
   console.log(result);
 })();
 ```
 
 
-W ten sposób WebAssembly pozwala na wykorzystanie kodu z różnych języków programowania na stronach internetowych i zapewnia dużą wydajność w porównaniu z tradycyjnym JavaScriptem.
+W ten sposób Web Assembly pozwala na wykorzystanie kodu z różnych języków programowania na stronach internetowych i zapewnia dużą wydajność w porównaniu z tradycyjnym JavaScriptem.
 
+Przykład plików *.wat i *.wasm
+![alt text](AGV_vUda7k5tOSjEdE_8AnHin940mJBZv6j0NeLU-DjzRFl8wSv4eY9Nkc9CzOYDguJKW-iHSkQJyoi-KniKQnwxReclxQHdveqxnSND1DSNac5oQ-4ru31LKJUW.png)
+
+wat to czytelna dla człowieka forma, bazuje na **S-wyrażeniach**, pozwalających przedstawiać różne typy danych, listy, drzewa itp. pod postacią tesktu.
 ## 3. Gdzie jest używane WASM?
 
 ### Figma
@@ -77,19 +81,19 @@ W ten sposób WebAssembly pozwala na wykorzystanie kodu z różnych języków pr
 
 ### Zalety
 - Wydajność - oferuje wydajność zbliżoną do kodu natywnego, co jest znaczną poprawą w porównaniu do tradycyjnego JavaScriptu. Dzięki temu aplikacje webowe mogą działać szybciej i bardziej płynnie
-- Przenośność - Kod WebAssembly jest binarny i przenośny, co oznacza, że może być łatwo przenoszony i uruchamiany na różnych platformach i urządzeniach bez konieczności modyfikacji.
-- Językowo niezależny - WebAssembly można tworzyć przy użyciu różnych języków programowania, takich jak C, C++, Rust
+- Przenośność - Kod Web Assembly jest binarny i przenośny, co oznacza, że może być łatwo przenoszony i uruchamiany na różnych platformach i urządzeniach bez konieczności modyfikacji.
+- Językowo niezależny - Web Assembly można tworzyć przy użyciu różnych języków programowania
 - mniejsze rozmiary plików w stosunku do JS
 
 ### Wady
-- brak garbage collector
+- brak garbage collector, nie dotyczy Rust'a ;)
 - komunikuje się z DOM'em przez Javascript, a nie bezpośrednio
 
 ## 5. Setup projektu
 
 ### 5.1 Potrzebne narzędzia
 
-Przed rozpoczęciem tworzenia projektu WebAssembly w Rust-cie, musimy pobrać odpowiednie narzędzia.
+Przed rozpoczęciem tworzenia projektu Web Assembly w Rust-cie, musimy pobrać odpowiednie narzędzia.
 
 `Rust`
 
@@ -99,7 +103,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 `wasm-pack`
 
-Narzędzie służące m.in. do kompilowania kodu Rust-a do WebAssembly.
+Narzędzie służące m.in. do kompilowania kodu Rust-a do Web Assembly.
 
 ```
 cargo install wasm-pack
@@ -145,7 +149,7 @@ wasm-bindgen = "0.2"
 ```
 wasm-pack build --target web
 ```
-To polecenie skompiluje nasz kod Rust-a do WebAssembly oraz stworzy plik JS, który zamieni plik WASM w moduł zrozumiały dla przeglądarki.
+To polecenie skompiluje nasz kod Rust-a do Web Assembly oraz stworzy plik JS, który zamieni plik WASM w moduł zrozumiały dla przeglądarki.
 Następnie stworzy folder `pkg`, w którym zamieści powstałe pliki oraz na podstawie `Cargo.toml` stworzy `package.json`.
 
 *Dodanie flagi --target web umożliwia importowanie stworzonych plików JS jako natywne moduły ES. Domyślnie `wasm-pack` builduje kod z flagą **bundler**, przez co tworzy kod przeznaczony do pracy z bundlerami, np. Webpackiem.*
@@ -170,19 +174,19 @@ Teraz nasza struktura plików powinna wyglądać tak:
 
 **`tutorial_bg.wasm`**
 
-Plik binarny WebAssembly generowany przez kompilator Rust-a. Zawiera wszystkie funkcje i dane stworzone przez nas w Rust-cie. 
+Plik binarny Web Assembly generowany przez kompilator Rust-a. Zawiera wszystkie funkcje i dane stworzone przez nas w Rust-cie. 
 
 **`tutorial.js`**
 
-Plik *.js* generowany przez `wasm-pack`. Zawiera w sobie mechanizmy dzięki, którym możemy importować **DOM** i funkcje JavaScriptu do Rust-a oraz API do WebAssembly. Zawiera również funkcje napisane przez nas w Rust-cie.
+Plik *.js* generowany przez `wasm-pack`. Zawiera w sobie mechanizmy dzięki, którym możemy importować **DOM** i funkcje JavaScriptu do Rust-a oraz API do Web Assembly. Zawiera również funkcje napisane przez nas w Rust-cie.
 
 **`tutorial.d.ts`**
 
-Plik *.d.ts* zawierający deklarację typów w TypeScript. Przydatny gdy używamy TypeScriptu przy pracy z WebAssembly, ponieważ umożliwia np. podpowiedzi ze strony IDE.
+Plik *.d.ts* zawierający deklarację typów w TypeScript. Przydatny gdy używamy TypeScriptu przy pracy z Web Assembly, ponieważ umożliwia np. podpowiedzi ze strony IDE.
 
 **`tutorial_bg.d.ts`**
 
-Podobnie jak powyższy plik zawiera deklaracje typów dla funkcji wykorzystywanych w API do WebAssembly.
+Podobnie jak powyższy plik zawiera deklaracje typów dla funkcji wykorzystywanych w API do Web Assembly.
 
 
 ### 5.4 Zastosowanie
@@ -232,7 +236,7 @@ Po włączeniu serwera zobaczymy:
 
 ## 6. Prosty przykład - Kółko i krzyżyk
 
-Napiszmy wszystkim znaną grę w kółko i krzyżyk przy pomocy WebAssembly i Rust-a.
+Napiszmy wszystkim znaną grę w kółko i krzyżyk przy pomocy Web Assembly i Rust-a.
 
 Rust będzie odpowiedzialny za logikę oraz stan gry, a JavaScript za interakcję użytkownika.
 
@@ -369,11 +373,11 @@ const board = Board.new();
 W tym momencie jest szansa, że przyjdzie myśl - *"Jak dostaniemy informacje o komórkach?"*.
 
 ### Komunikacja Rust <-> JS
-Jest to jeden z ważniejszych konceptów w WebAssembly. Z racji na to, że w JS instancje `Object`, `Array` i węzły `DOM-u` są alokowane na heap-ie, który jest obsługiwany przez **garbage-collector**, to ta pamięć jest oddzielona od liniowej przestrzeni pamięci WebAssembly. Co skutkuje tym, że Rust nie ma dostępu do pamięci JS-a (to może się zmienić - [patrz tutaj](https://github.com/WebAssembly/component-model)). Natomiast JS ma dostęp do **zapisu** oraz **odczytu** z pamięci WebAssembly, ale jedynie przez API `ArrayBuffer` dla wartości skalarnych(`u8`, `i32`, `f64`, itd... ).
+Jest to jeden z ważniejszych konceptów w Web Assembly. Z racji na to, że w JS instancje `Object`, `Array` i węzły `DOM-u` są alokowane na heap-ie, który jest obsługiwany przez **garbage-collector**, to ta pamięć jest oddzielona od liniowej przestrzeni pamięci Web Assembly. Co skutkuje tym, że Rust nie ma dostępu do pamięci JS-a (to może się zmienić - [patrz tutaj](https://github.com/Web Assembly/component-model)). Natomiast JS ma dostęp do **zapisu** oraz **odczytu** z pamięci Web Assembly, ale jedynie przez API `ArrayBuffer` dla wartości skalarnych(`u8`, `i32`, `f64`, itd... ).
 
-Przy tworzeniu interfejsu pomiędzy JS a WebAssembly należy ograniczać kopiowanie do oraz z pamięci WebAssembly, jak również ograniczać serializowanie i deserializowanie danych.
+Przy tworzeniu interfejsu pomiędzy JS a Web Assembly należy ograniczać kopiowanie do oraz z pamięci Web Assembly, jak również ograniczać serializowanie i deserializowanie danych.
 
-Z założenia dobry interfejs JS <-> WASM to taki, w którym duże struktury danych są przechowywane w pamięci liniowej WebAssembly i są tylko przeznaczone do odczytu przez JS.
+Z założenia dobry interfejs JS <-> WASM to taki, w którym duże struktury danych są przechowywane w pamięci liniowej Web Assembly i są tylko przeznaczone do odczytu przez JS.
 
 
 Dodajmy w takim razie taki interfejs do naszego mini-projektu. Do struktury `Board` dopiszmy funkcję zwracającą wskaźnik na pole `cells`.
@@ -477,7 +481,7 @@ cells.forEach((cell) => {
 <img src="img/gameplay.gif">
 
 ## 7. Podsumowanie
-`wasm_bindgen` umożliwia proste tworzenie interfejsów między Rust-em i JS-em. Dzięki temu możemy wykorzystać szybkość Rust-a podczas tworzenia aplikacji webowych. Istnieją również biblioteki UI stworzone w Rust-cie do WebAssembly, które znacznie ułatwiają tworzenie front-endu. Jedną z popularniejszych bibliotek jest [Yew](https://yew.rs/).
+`wasm_bindgen` umożliwia proste tworzenie interfejsów między Rust-em i JS-em. Dzięki temu możemy wykorzystać szybkość Rust-a podczas tworzenia aplikacji webowych. Istnieją również biblioteki UI stworzone w Rust-cie do Web Assembly, które znacznie ułatwiają tworzenie front-endu. Jedną z popularniejszych bibliotek jest [Yew](https://yew.rs/).
 ### Porównanie kodu Yew i React
 ```rust
 use yew::prelude::*;
