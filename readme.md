@@ -28,8 +28,6 @@ Garść informacji:
 - pracę nad WASM rozpoczęto w 2015 roku
 - w grudniu 2019 roku został zaakceptowany jako standard przez W3C
 - nazwa nawiązuje do Assemblera, z racji niskopoziomowego kodu
--  został czwartym językiem natywnie obsługiwanym w przeglądarkach internetowych, dołączając do HTML, JavaScript, oraz CSS
-
 ## 2. Jak działa Web Assembly?
 <img src="./img/wasm_scheme.png"/>
 <br/>
